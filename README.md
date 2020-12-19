@@ -6,27 +6,18 @@ Connect to a NTP server, here is how:
 
 ```cpp
 #include <NTPClient.h>
-// change next line to use with another board/shield
-#include <ESP8266WiFi.h>
-//#include <WiFi.h> // for WiFi shield
-//#include <WiFi101.h> // for WiFi 101 shield or MKR1000
+#include <WiFi.h> // for WiFi shield
 #include <WiFiUdp.h>
 
-const char *ssid     = "<SSID>";
-const char *password = "<PASSWORD>";
+const char *ssid     = "YOUR_SSID_WIFI";
+const char *password = "YOUR_PASS_WIFI";
 
 WiFiUDP ntpUDP;
-
-// By default 'pool.ntp.org' is used with 60 seconds update interval and
-// no offset
-NTPClient timeClient(ntpUDP);
-
-// You can specify the time server pool and the offset, (in seconds)
-// additionaly you can specify the update interval (in milliseconds).
-// NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 25200, 60000);
 
 void setup(){
   Serial.begin(115200);
+
   WiFi.begin(ssid, password);
 
   while ( WiFi.status() != WL_CONNECTED ) {
@@ -39,8 +30,7 @@ void setup(){
 
 void loop() {
   timeClient.update();
-
-  Serial.println(timeClient.getFormattedTime());
+  Serial.println(timeClient.getFullFormattedTime());
 
   delay(1000);
 }
